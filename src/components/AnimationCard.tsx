@@ -1,49 +1,118 @@
+// ...existing code...
 "use client"
+import React from "react"
 
-import type React from "react"
+type Props = {
+  title: string
+  subtitle?: string
+  children?: React.ReactNode
+  controls?: React.ReactNode
+}
 
-function AnimationCard({ title, children }: { title: string; children: React.ReactNode }) {
+export default function AnimationCard({ title, subtitle, children, controls }: Props) {
   return (
     <div
       style={{
-        background: "#1a1a1a",
-        border: "1px solid #2a2a2a",
-        borderRadius: "8px",
+        display: "flex",
+        flexDirection: "column",
+        background: "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04))",
+        border: "1px solid rgba(255,255,255,0.04)",
+        borderRadius: 12,
+        padding: 12,
+        gap: 12,
+        boxShadow: "0 6px 18px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02)",
+        backdropFilter: "blur(6px)",
+        minHeight: 600,
         overflow: "hidden",
-        transition: "border-color 0.3s ease",
+        height: "100%",
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#3a3a3a")}
-      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#2a2a2a")}
     >
       <div
         style={{
-          padding: "16px 20px",
-          borderBottom: "1px solid #2a2a2a",
-          background: "#151515",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+          flexShrink: 0,
         }}
       >
-        <h3
+        <div>
+          <h3
+            style={{
+              margin: 0,
+              color: "#eaeaea",
+              fontSize: "1.05rem",
+              fontWeight: 700,
+              letterSpacing: "-0.2px",
+            }}
+          >
+            {title}
+          </h3>
+          {subtitle ? (
+            <p style={{ margin: 0, color: "#9a9a9a", fontSize: "0.85rem" }}>{subtitle}</p>
+          ) : null}
+        </div>
+
+        <div
           style={{
-            fontSize: "16px",
-            fontWeight: "600",
-            color: "#e0e0e0",
-            margin: 0,
+            padding: "6px 10px",
+            background: "linear-gradient(90deg,#1b1b1b,#242424)",
+            borderRadius: 8,
+            border: "1px solid rgba(255,255,255,0.03)",
+            color: "#cfcfcf",
+            fontSize: "0.8rem",
+            flexShrink: 0,
           }}
         >
-          {title}
-        </h3>
+          Preview
+        </div>
       </div>
+
       <div
         style={{
-          width: "100%",
-          height: "400px",
+          flex: 1,
+          display: "flex",
+          alignItems: "stretch",
+          justifyContent: "stretch",
+          borderRadius: 10,
+          overflow: "hidden",
+          background: "linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45))",
           position: "relative",
         }}
       >
-        {children}
+        <div
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            zIndex: 10,
+            display: "flex",
+            gap: 8,
+            alignItems: "center",
+          }}
+        >
+          {controls ? (
+            controls
+          ) : (
+            <div
+              style={{
+                padding: "6px 10px",
+                background: "rgba(0,0,0,0.45)",
+                borderRadius: 8,
+                color: "#eaeaea",
+                fontSize: "0.8rem",
+                border: "1px solid rgba(255,255,255,0.03)",
+                backdropFilter: "blur(4px)",
+              }}
+            >
+              Controls
+            </div>
+          )}
+        </div>
+
+        <div style={{ flex: 1, position: "relative", minHeight: 0 }}>{children}</div>
       </div>
     </div>
   )
 }
-
-export default AnimationCard
+// ...existing code...
