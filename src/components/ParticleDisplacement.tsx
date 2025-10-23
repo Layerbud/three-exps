@@ -28,14 +28,14 @@ export default function ParticleDisplacement() {
     container.appendChild(renderer.domElement)
 
     // Particle setup
-    const particleCount = 8000
+    const particleCount = 5000
     const positions = new Float32Array(particleCount * 3)
     const originPositions = new Float32Array(particleCount * 3)
     const velocities = new Float32Array(particleCount * 3)
     const colors = new Float32Array(particleCount * 3)
 
     // Create sphere distribution
-    const radius = 8
+    const radius = 10
     for (let i = 0; i < particleCount; i++) {
       const theta = Math.random() * Math.PI * 2
       const phi = Math.acos(2 * Math.random() - 1)
@@ -68,7 +68,7 @@ export default function ParticleDisplacement() {
     geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3))
 
     const material = new THREE.PointsMaterial({
-      size: 0.08,
+      size: 0.03,
       vertexColors: true,
       blending: THREE.AdditiveBlending,
       transparent: true,

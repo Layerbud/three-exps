@@ -38,7 +38,7 @@ function DimensionalSpiral() {
 
     // Create spiral
     const spiralLayers = 80
-    const pointsPerLayer = 60
+    const pointsPerLayer = 50
     const count = spiralLayers * pointsPerLayer
 
     const geometry = new THREE.BufferGeometry()
@@ -50,7 +50,7 @@ function DimensionalSpiral() {
     for (let layer = 0; layer < spiralLayers; layer++) {
       const progress = layer / spiralLayers
       const y = (progress - 0.5) * 100
-      const baseRadius = 50 * (1 - progress * 0.3)
+      const baseRadius = 70 * (1 - progress * 0.3)
 
       for (let p = 0; p < pointsPerLayer; p++) {
         const angle = (p / pointsPerLayer) * Math.PI * 2 + layer * 0.15
@@ -73,8 +73,8 @@ function DimensionalSpiral() {
     geometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1))
 
     const material = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 3.0,
+      color: 0xfffff0,
+      size: 1.5,
       transparent: true,
       opacity: 0.9,
       sizeAttenuation: true,
@@ -97,29 +97,36 @@ function DimensionalSpiral() {
         for (let p = 0; p < pointsPerLayer; p++) {
           const i = layer * pointsPerLayer + p
 
-          const pulsePhase = time * 0.0008 - layerProgress * 8
-          const pulse = Math.sin(pulsePhase) * 12
-          const dimensionalFade = (Math.sin(pulsePhase) + 1) * 0.5
+          // Faster pulse by increasing time multiplier
+          const pulsePhase = time * 0.002 - layerProgress * 12
+          const pulse = Math.sin(pulsePhase) * 15
+          const dimensionalFade = (Math.sin(pulsePhase * 1.5) + 1) * 0.6
 
           const baseX = basePositions[i * 3]
           const baseY = basePositions[i * 3 + 1]
           const baseZ = basePositions[i * 3 + 2]
 
           const distFromCenter = Math.sqrt(baseX * baseX + baseZ * baseZ)
-          const pulseFactor = 1 + (pulse / (distFromCenter + 1)) * 0.3
+          // Increased pulsation effect
+          const pulseFactor = 1 + (pulse / (distFromCenter + 1)) * 0.5
 
+          // Add vertical wave motion
+          const verticalWave = Math.sin(time * 0.001 + distFromCenter * 0.1) * 2
+          
           pos[i * 3] = baseX * pulseFactor
-          pos[i * 3 + 1] = baseY
+          pos[i * 3 + 1] = baseY + verticalWave * layerProgress
           pos[i * 3 + 2] = baseZ * pulseFactor
 
-          sizeAttr[i] = 0.8 + dimensionalFade * 0.4
+          // Smaller point size with more variation
+          sizeAttr[i] = 0.4 + dimensionalFade * 0.3
         }
       }
 
       points.geometry.attributes.position.needsUpdate = true
       points.geometry.attributes.size.needsUpdate = true
 
-      points.rotation.y += 0.0002
+
+      points.rotation.y += 0.001
 
       renderer.render(scene, camera)
     }
